@@ -1,7 +1,7 @@
 {
   "name": "baking-cups-to-grams",
   "version": "0.1.0",
-  "description": "",
+  "description": "Convert cups to grams for several common baking ingredients",
   "main": "elm.js",
   "dependencies": {},
   "devDependencies": {
@@ -10,7 +10,7 @@
     "elm-live": "^4.0.1"
   },
   "scripts": {
-    "start": "elm-live src/Main.elm --start-page=index.html --open -- --output=elm.js",
+    "start": "elm-live src/Main.elm --start-page=index.html --open -- --output=elm-dist.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
