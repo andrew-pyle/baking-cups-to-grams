@@ -89,10 +89,7 @@ bakingIngredientToString ingredient =
 type Msg
     = Increment
     | Decrement
-    | CupsInput (Maybe Int)
-
-
-
+    | CupsInput (Maybe Float)
 
 
 update : Msg -> Model -> Model
@@ -172,17 +169,7 @@ view model =
 
 parseCupsInput : String -> Msg
 parseCupsInput inputText =
-    CupsInput (String.toInt inputText)
-
-
-type BakingIngredient
-    = Flour
-    | GranulatedSugar
-    | BrownSugar
-    | Butter
-    | Shortening
-    | PowderedSugar
-    | PeanutButter
+    CupsInput (String.toFloat inputText)
 
 
 cupsToGrams : Float -> BakingIngredient -> Float
