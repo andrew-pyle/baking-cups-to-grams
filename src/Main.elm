@@ -104,15 +104,15 @@ view model =
     -- TODO Map out this component
     -- TODO Use float for cups input & computation
     div [ class "container" ]
-        [ h1 [] [ text "Cups of Ingredient → Grams of Ingredient" ]
-        , button [ class "btn btn-round", onClick Decrement ] [ text "➖" ]
+        [ h1 [] [ text "Cups → Grams of Ingredient" ]
+        , button [ class "btn btn-round", onClick Decrement ] [ text "–" ]
         , input
             [ placeholder "Cups"
             , value (String.fromInt model.numberOfCups)
             , onInput parseCupsInput
             ]
             []
-        , button [ class "btn btn-round", onClick Increment ] [ text "➕" ]
+        , button [ class "btn btn-round", onClick Increment ] [ text "+" ]
 
         -- , div []
         --     [
