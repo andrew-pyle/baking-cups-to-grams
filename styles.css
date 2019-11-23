@@ -1,0 +1,86 @@
+:root {
+  --font-header: "Londrina Solid", sans-serif;
+  --font-body: "Londrina Solid", sans-serif;
+  --font-monospace: "Space Mono", monospace;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* ====== Typography ====== */
+
+body {
+  background: lightgoldenrodyellow;
+  font-family: var(--font-body);
+}
+
+h1 {
+  font-family: var(--font-header);
+  font-size: 2.5rem;
+  font-weight: 400;
+}
+
+input {
+  font-size: inherit;
+  border: 0;
+  text-align: center;
+  padding: 1em;
+  background: none;
+  border-bottom: 2px darkgray solid;
+  width: 5em;
+}
+
+.btn {
+  font-size: inherit;
+  background: none;
+  border-radius: 100px;
+  border: 0;
+  border: 2px solid lightgrey;
+  background: lightgrey;
+}
+
+.btn-round {
+  border-radius: 50%;
+  width: 2.75em;
+  height: 2.75em;
+  padding: 0;
+}
+
+.grams-output {
+  border-collapse: collapse;
+  text-align: right;
+  font-size: 1.25rem;
+  letter-spacing: 1px;
+}
+
+.grams-output td {
+  padding: 0.75em;
+  border-bottom: 1px dotted lightgrey;
+}
+
+.td-ingredient,
+.td-unit {
+  font-weight: 300;
+  font-family: var(--font-header);
+}
+
+.td-gram-value {
+  font-family: var(--font-monospace);
+  font-weight: 400;
+}
+
+/* ====== Layout ====== */
+
+.container {
+  margin: 0 auto;
+  text-align: center;
+}
+
+body {
+  margin: 0 auto;
+}
+
+.grams-output {
+  margin: 0 auto;
+}

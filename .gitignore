@@ -1,0 +1,10 @@
+# VS Code Editor
+.vscode/
+
+# Node JS
+node_modules/
+
+# Elm
+elm.js
+elm-stuff
+repl-temp-*
