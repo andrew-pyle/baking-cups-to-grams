@@ -41,7 +41,7 @@ input {
   --input-border-size-style: 2px solid;
 }
 
-.input-cups {
+.input-custom {
   font-size: var(--font-size-controls);
   width: 3em;
   margin: 1em;
@@ -50,11 +50,11 @@ input {
   transition: border var(--transition-duration);
 }
 
-.input-cups:hover {
+.input-custom:hover {
   border-bottom: var(--input-border-size-style) var(--color-accent);
 }
 
-.input-cups:focus {
+.input-custom:focus {
   outline: 0;
   border-bottom: var(--input-border-size-style) var(--color-accent);
 }
@@ -106,6 +106,10 @@ input {
 .td-gram-value {
   font-family: var(--font-monospace);
   font-weight: 400;
+}
+
+.visually-hidden {
+  opacity: 0;
 }
 
 /* ====== Layout ====== */

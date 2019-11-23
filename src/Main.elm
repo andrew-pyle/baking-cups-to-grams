@@ -27,12 +27,12 @@ main =
 
 
 type alias Model =
-    { numberOfCups : Float }
+    { numberOfCups : String }
 
 
 init : Model
 init =
-    Model 1.0
+    Model ""
 
 
 type BakingIngredient
@@ -87,36 +87,26 @@ bakingIngredientToString ingredient =
 
 
 type Msg
-    = Increment
-    | Decrement
-    | CupsInput (Maybe Float)
+    = CupsInput String
+
+
+
+-- | Increment
+-- | Decrement
 
 
 update : Msg -> Model -> Model
 update msg model =
-    -- TODO Fix issues: can't erase the value when typing
     case msg of
-        Increment ->
-            { model | numberOfCups = model.numberOfCups + 1.0 }
-
-        Decrement ->
-            if model.numberOfCups > 1.0 then
-                { model | numberOfCups = model.numberOfCups - 1.0 }
-
-            else
-                model
-
+        -- Increment ->
+        --     { model | numberOfCups = model.numberOfCups + 1.0 }
+        -- Decrement ->
+        --     if model.numberOfCups > 1.0 then
+        --         { model | numberOfCups = model.numberOfCups - 1.0 }
+        --     else
+        --         model
         CupsInput input ->
-            case input of
-                Just value ->
-                    if value > 0 then
-                        { model | numberOfCups = value }
-
-                    else
-                        model
-
-                Nothing ->
-                    model
+            { model | numberOfCups = input }
 
 
 
@@ -125,23 +115,21 @@ update msg model =
 
 view : Model -> Html Msg
 view model =
-    -- TODO Map out this component
-    -- TODO Use float for cups input & computation
     div [ class "container" ]
         [ h1 []
             [ text "Cups "
             , span [ class "unicode-arrow" ] [ text "→" ]
             , text " Grams of Ingredient"
             ]
-        , button [ class "btn btn-round", onClick Decrement ] [ text "–" ]
+        , label [ for "input-cups", class "visually-hidden" ] [ text "Cups" ]
         , input
-            [ class "input-cups"
+            [ id "input-cups"
+            , class "input-custom"
             , placeholder "Cups"
-            , value <| String.fromFloat <| model.numberOfCups
-            , onInput parseCupsInput
+            , value model.numberOfCups
+            , onInput CupsInput
             ]
             []
-        , button [ class "btn btn-round", onClick Increment ] [ text "+" ]
         , table
             [ class "grams-output" ]
             [ thead []
@@ -153,7 +141,7 @@ view model =
                         tr []
                             [ td [ class "td-ingredient" ] [ text <| bakingIngredientToString ingredient ]
                             , td [ class "td-gram-value" ]
-                                [ text <| Round.round 2 <| cupsToGrams model.numberOfCups ingredient ]
+                                [ text <| maybeCalculateGrams model.numberOfCups ingredient ]
                             , td [ class "td-unit" ] [ text "g" ]
                             ]
                     )
@@ -167,9 +155,14 @@ view model =
 -- HELPERS
 
 
-parseCupsInput : String -> Msg
-parseCupsInput inputText =
-    CupsInput (String.toFloat inputText)
+maybeCalculateGrams : String -> BakingIngredient -> String
+maybeCalculateGrams numberOfCups ingredient =
+    case String.toFloat numberOfCups of
+        Just value ->
+            Round.round 2 <| cupsToGrams value ingredient
+
+        Nothing ->
+            ""
 
 
 cupsToGrams : Float -> BakingIngredient -> Float
