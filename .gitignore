@@ -11,3 +11,6 @@ repl-temp-*
 
 # Build Artifacts
 dist/
+
+# macOS
+.DS_Store
