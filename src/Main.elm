@@ -11,6 +11,7 @@ import Browser
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (onClick, onInput)
+import Round
 
 
 
@@ -26,23 +27,62 @@ main =
 
 
 type alias Model =
-    { numberOfCups : Int }
-
-
-
---{ name : String
---, password : String
---, passwordAgain : String
---}
+    { numberOfCups : Float }
 
 
 init : Model
 init =
-    Model 1
+    Model 1.0
+
+
+type BakingIngredient
+    = Flour
+    | GranulatedSugar
+    | BrownSugar
+    | Butter
+    | Shortening
+    | PowderedSugar
+    | PeanutButter
+
+
+bakingIngredients : List BakingIngredient
+bakingIngredients =
+    [ Flour
+    , GranulatedSugar
+    , BrownSugar
+    , Butter
+    , Shortening
+    , PowderedSugar
+    , PeanutButter
+    ]
+
+
+bakingIngredientToString : BakingIngredient -> String
+bakingIngredientToString ingredient =
+    case ingredient of
+        Flour ->
+            "Flour"
+
+        GranulatedSugar ->
+            "Granulated Sugar"
+
+        BrownSugar ->
+            "Brown Sugar"
+
+        Butter ->
+            "Butter"
+
+        Shortening ->
+            "Shortening"
+
+        PowderedSugar ->
+            "Powdered Sugar"
+
+        PeanutButter ->
+            "Peanut Butter"
 
 
 
--- Model "" "" ""
 -- UPDATE
 
 
@@ -53,25 +93,18 @@ type Msg
 
 
 
---= Name String
---| Password String
---| PasswordAgain String
 
 
 update : Msg -> Model -> Model
 update msg model =
-    -- TODO Fix issues: not DRY logic, can't erase the value when typing
+    -- TODO Fix issues: can't erase the value when typing
     case msg of
         Increment ->
-            if model.numberOfCups > 0 then
-                { model | numberOfCups = model.numberOfCups + 1 }
-
-            else
-                model
+            { model | numberOfCups = model.numberOfCups + 1.0 }
 
         Decrement ->
-            if model.numberOfCups > 1 then
-                { model | numberOfCups = model.numberOfCups - 1 }
+            if model.numberOfCups > 1.0 then
+                { model | numberOfCups = model.numberOfCups - 1.0 }
 
             else
                 model
@@ -90,12 +123,6 @@ update msg model =
 
 
 
---Name name ->
---  { model | name = name }
---Password password ->
---  { model | password = password }
---PasswordAgain password ->
---  { model | passwordAgain = password }
 -- VIEW
 
 
@@ -113,105 +140,34 @@ view model =
         , input
             [ class "input-cups"
             , placeholder "Cups"
-            , value (String.fromInt model.numberOfCups)
+            , value <| String.fromFloat <| model.numberOfCups
             , onInput parseCupsInput
             ]
             []
         , button [ class "btn btn-round", onClick Increment ] [ text "+" ]
-
-        -- , div []
-        --     [
-        --     ul []
-        --         [ li []
-        --             [ text <|
-        --                 String.append "Flour: " <|
-        --                     String.fromInt <|
-        --                         cupsToGrams model.numberOfCups Flour
-        --             ]
-        --         , li []
-        --             [ cupsToGrams
-        --                 model.numberOfCups
-        --                 GranulatedSugar
-        --                 |> String.fromInt
-        --                 |> String.append "Sugar: "
-        --                 |> text
-        --             ]
-        --         , li []
-        --             [ text <|
-        --                 "Brown Sugar: "
-        --                     ++ String.fromInt (cupsToGrams model.numberOfCups BrownSugar)
-        --             ]
-        --         , li []
-        --             [ text
-        --                 ("Butter: "
-        --                     ++ String.fromInt (cupsToGrams model.numberOfCups Butter)
-        --                 )
-        --             ]
-        --         ]
-        --     ]
         , table
             [ class "grams-output" ]
             [ thead []
                 []
             , tbody
                 []
-                [ tr []
-                    [ td [ class "td-ingredient" ] [ text "Flour" ]
-                    , td [ class "td-gram-value" ] [ text <| String.fromInt (cupsToGrams model.numberOfCups Flour) ]
-                    , td [ class "td-unit" ] [ text "g" ]
-                    ]
-                , tr []
-                    [ td [] [ text "Granulated Sugar" ]
-                    , td [] [ text <| String.fromInt (cupsToGrams model.numberOfCups GranulatedSugar) ]
-                    , td [] [ text "g" ]
-                    ]
-                , tr []
-                    [ td []
-                        [ text "Brown Sugar" ]
-                    , td [] [ text <| String.fromInt (cupsToGrams model.numberOfCups BrownSugar) ]
-                    , td [] [ text "g" ]
-                    ]
-                , tr []
-                    [ td []
-                        [ text "Butter" ]
-                    , td
-                        []
-                        [ text <| String.fromInt (cupsToGrams model.numberOfCups Butter) ]
-                    , td [] [ text "g" ]
-                    ]
-                , tr []
-                    [ td []
-                        [ text "Shortening" ]
-                    , td
-                        []
-                        [ text <| String.fromInt (cupsToGrams model.numberOfCups Shortening) ]
-                    , td [] [ text "g" ]
-                    ]
-                , tr []
-                    [ td []
-                        [ text "Powdered Sugar" ]
-                    , td
-                        []
-                        [ text <| String.fromInt (cupsToGrams model.numberOfCups PowderedSugar) ]
-                    , td [] [ text "g" ]
-                    ]
-                , tr []
-                    [ td []
-                        [ text "Peanut Butter" ]
-                    , td
-                        []
-                        [ text <| String.fromInt (cupsToGrams model.numberOfCups PeanutButter) ]
-                    , td [] [ text "g" ]
-                    ]
-                ]
+                (List.map
+                    (\ingredient ->
+                        tr []
+                            [ td [ class "td-ingredient" ] [ text <| bakingIngredientToString ingredient ]
+                            , td [ class "td-gram-value" ]
+                                [ text <| Round.round 2 <| cupsToGrams model.numberOfCups ingredient ]
+                            , td [ class "td-unit" ] [ text "g" ]
+                            ]
+                    )
+                    bakingIngredients
+                )
             ]
-
-        -- , p [] [text <| String.fromInt model.numberOfCups]
-        --, viewInput "text" "Name" model.name Name
-        --, viewInput "password" "Password" model.password Password
-        --, viewInput "password" "Re-enter Password" model.passwordAgain PasswordAgain
-        --, viewValidation model
         ]
+
+
+
+-- HELPERS
 
 
 parseCupsInput : String -> Msg
@@ -229,38 +185,26 @@ type BakingIngredient
     | PeanutButter
 
 
-cupsToGrams : Int -> BakingIngredient -> Int
+cupsToGrams : Float -> BakingIngredient -> Float
 cupsToGrams cups unit =
     case unit of
         Flour ->
-            cups * 128
+            cups * 128.0
 
         GranulatedSugar ->
-            cups * 200
+            cups * 200.0
 
         BrownSugar ->
-            cups * 200
+            cups * 200.0
 
         Butter ->
-            cups * 230
+            cups * 230.0
 
         PeanutButter ->
-            cups * round (213 / 1.5)
+            cups * (213.0 / 1.5)
 
         Shortening ->
-            cups * 205
+            cups * 205.0
 
         PowderedSugar ->
-            cups * 125
-
-
-
---viewInput : String -> String -> String -> (String -> msg) -> Html msg
---viewInput t p v toMsg =
---  input [ type_ t, placeholder p, value v, onInput toMsg ] []
---viewValidation : Model -> Html msg
---viewValidation model =
---  if model.password == model.passwordAgain then
---    div [ style "color" "green" ] [ text "OK" ]
---  else
---    div [ style "color" "red" ] [ text "Passwords do not match!" ]
+            cups * 125.0
