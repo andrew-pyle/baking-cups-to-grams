@@ -5,6 +5,9 @@
   --color-primary: rgba(219, 218, 210);
   --color-accent: rgba(183, 29, 96, 0.85);
   --color-dark: rgba(43, 39, 40);
+  --color-light: grey;
+  --font-size-controls: 2rem;
+  --transition-duration: 200ms;
 }
 
 * {
@@ -30,22 +33,50 @@ h1 {
 }
 
 input {
+  font-family: inherit;
   font-size: inherit;
   border: 0;
-  text-align: center;
-  padding: 1em;
+  padding: 0.25em;
   background: none;
-  border-bottom: 2px grey solid;
-  width: 5em;
+  --input-border-size-style: 2px solid;
+}
+
+.input-cups {
+  font-size: var(--font-size-controls);
+  width: 2em;
+  margin: 1em;
+  text-align: center;
+  border-bottom: 1px solid var(--color-light);
+  transition: border var(--transition-duration);
+}
+
+.input-cups:hover {
+  border-bottom: var(--input-border-size-style) var(--color-accent);
+}
+
+.input-cups:focus {
+  outline: 0;
+  border-bottom: var(--input-border-size-style) var(--color-accent);
 }
 
 .btn {
-  font-size: 2rem;
+  font-size: var(--font-size-controls);
   background: none;
   border-radius: 100px;
   border: 0;
   color: var(--color-primary);
   background: var(--color-accent);
+  transition: border var(--transition-duration),
+    color var(--transition-duration),
+    background-color var(--transition-duration);
+}
+
+.btn:focus,
+.btn:hover {
+  cursor: pointer;
+  background: var(--color-primaryt);
+  color: var(--color-accent);
+  border: 2px solid var(--color-accent);
 }
 
 .btn-round {
