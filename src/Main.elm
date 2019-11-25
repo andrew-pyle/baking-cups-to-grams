@@ -126,6 +126,8 @@ view model =
             [ id "input-cups"
             , class "input-custom"
             , placeholder "Cups"
+            , type_ "number"
+            , pattern "[0-9.]*"
             , value model.numberOfCups
             , onInput CupsInput
             ]
