@@ -11,7 +11,7 @@
   },
   "scripts": {
     "start": "elm-live src/Main.elm --start-page=index.html --open -- --output=elm-dist.js",
-    "build": "mkdir -p dist && cp index.html styles.css dist/ && elm make src/Main.elm --output=dist/elm-dist.js",
+    "build": "mkdir -p dist && cp index.html styles.css dist/ && elm make src/Main.elm --optimize --output=dist/elm-dist.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
