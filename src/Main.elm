@@ -121,17 +121,18 @@ view model =
             , span [ class "unicode-arrow" ] [ text "→" ]
             , text " Grams of Ingredient"
             ]
-        , label [ for "input-cups", class "visually-hidden" ] [ text "Cups" ]
-        , input
-            [ id "input-cups"
-            , class "input-custom"
-            , placeholder "Cups"
-            , type_ "number"
-            , pattern "[0-9.]*"
-            , value model.numberOfCups
-            , onInput CupsInput
+        , Html.form []
+            [ input
+                [ id "input-cups"
+                , class "input-custom"
+                , type_ "number"
+                , pattern "[0-9.]*"
+                , value model.numberOfCups
+                , onInput CupsInput
+                ]
+                []
+            , label [ for "input-cups" ] [ text "Cups" ]
             ]
-            []
         , table
             [ class "grams-output" ]
             [ thead []
