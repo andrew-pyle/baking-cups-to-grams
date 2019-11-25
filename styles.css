@@ -32,6 +32,15 @@ h1 {
   }
 }
 
+a {
+  color: inherit;
+  transition: color;
+}
+a:hover,
+a:focus {
+  color: var(--color-dark);
+}
+
 /* Reset input styles */
 input {
   font-family: inherit;
@@ -114,15 +123,30 @@ input {
   opacity: 0;
 }
 
+.footer {
+  color: var(--color-primary);
+  background: var(--color-accent);
+  text-align: center;
+  padding: 2em;
+  margin-top: 1em;
+}
+
 /* ====== Layout ====== */
 
 .container {
+  flex-grow: 1; /* Expand to push footer to bottom */
   margin: 0 auto;
   text-align: center;
   max-width: 80%;
 }
 
 body {
+  display: flex;
+  flex-direction: column;
+  /* Vertical direction needs specified height of container
+  to allow children to expand via flex-grow. Used here for
+  sticky footer */
+  min-height: 100vh;
   margin: 0 auto;
   min-width: 275px;
 }
