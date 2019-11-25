@@ -10,7 +10,7 @@
     "elm-live": "^4.0.1"
   },
   "scripts": {
-    "start": "elm-live src/Main.elm --start-page=index.html --open -- --output=elm-dist.js",
+    "start": "elm-live src/Main.elm --host=0.0.0.0 --start-page=index.html --open -- --output=elm-dist.js",
     "build": "mkdir -p dist && cp index.html styles.css dist/ && elm make src/Main.elm --optimize --output=dist/elm-dist.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
