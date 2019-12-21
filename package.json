@@ -1,5 +1,5 @@
 {
-  "name": "baking-cups-to-grams",
+  "name": "baking-tools",
   "version": "0.1.0",
   "description": "Convert cups to grams for several common baking ingredients",
   "main": "elm.js",
