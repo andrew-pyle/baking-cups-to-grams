@@ -1,10 +1,3 @@
--- Input a user name and password. Make sure the password matches.
---
--- Read how it works:
---   https://guide.elm-lang.org/architecture/forms.html
---
-
-
 module Main exposing (..)
 
 import Browser
@@ -162,7 +155,7 @@ maybeCalculateGrams : String -> BakingIngredient -> String
 maybeCalculateGrams numberOfCups ingredient =
     case String.toFloat numberOfCups of
         Just value ->
-            Round.round 2 <| cupsToGrams value ingredient
+            Round.round 0 <| cupsToGrams value ingredient
 
         Nothing ->
             ""
