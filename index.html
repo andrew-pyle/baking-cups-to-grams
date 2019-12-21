@@ -34,7 +34,27 @@
         >
       </div>
     </footer>
-    <script>
+    <script type="module">
+      // Register Service Worker
+      // See: https://developers.google.com/web/fundamentals/primers/service-workers/
+      if ("serviceWorker" in navigator) {
+        window.addEventListener("load", async () => {
+          try {
+            const serviceWorkerUrl = "/service-worker.js";
+            const registration = await navigator.serviceWorker.register(
+              serviceWorkerUrl
+            );
+            console.log(
+              `Registered ${serviceWorkerUrl} with scope: ${registration.scope}`
+            );
+          } catch (error) {
+            console.warn(
+              `Unable to register Service Worker ${serviceWorkerUrl}: ${error}`
+            );
+          }
+        });
+      }
+      // Initialize Elm App
       var app = Elm.Main.init({
         node: document.getElementById("elm")
       });
