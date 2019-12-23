@@ -111,30 +111,34 @@ view model =
             , span [ class "unicode-arrow" ] [ text "→" ]
             , text " Grams of Ingredient"
             ]
-        , Html.form []
-            [ output [ class "input-display" ] [ text <| String.fromInt model.cupsInputWhole ++ fractionToString model.cupsInputFraction ]
-            , button [ class "btn one", type_ "button", onClick <| Increment 1 ]
-                [ text "+ 1"
+        , output [ class "user-input-display", for "user-input" ] [ text <| String.fromInt model.cupsInputWhole ++ fractionToString model.cupsInputFraction ]
+        , Html.form [ id "user-input", class "form-controls" ]
+            [ div [ class "form-row unit-row" ]
+                [ button [ class "btn one", type_ "button", onClick <| Increment 1 ]
+                    [ text "+ 1"
+                    ]
+                , button [ class "btn one", type_ "button", onClick <| Decrement 1 ]
+                    [ text "- 1"
+                    ]
+                , button [ class "btn clear", type_ "button", onClick Clear ] [ text "⌫" ]
                 ]
-            , button [ class "btn one", type_ "button", onClick <| Decrement 1 ]
-                [ text "- 1"
+            , div [ class "form-row fraction-row" ]
+                [ button [ class "btn one-quarter", type_ "button", onClick <| AlterFraction OneFourth ]
+                    [ text "¼"
+                    ]
+                , button [ class "btn one-third", type_ "button", onClick <| AlterFraction OneThird ]
+                    [ text "⅓"
+                    ]
+                , button [ class "btn one-half", type_ "button", onClick <| AlterFraction OneHalf ]
+                    [ text "½"
+                    ]
+                , button [ class "btn two-thirds", type_ "button", onClick <| AlterFraction TwoThirds ]
+                    [ text "⅔"
+                    ]
+                , button [ class "btn three-fourths", type_ "button", onClick <| AlterFraction ThreeFourths ]
+                    [ text "¾"
+                    ]
                 ]
-            , button [ class "btn one-quarter", type_ "button", onClick <| AlterFraction OneFourth ]
-                [ text "¼"
-                ]
-            , button [ class "btn one-third", type_ "button", onClick <| AlterFraction OneThird ]
-                [ text "⅓"
-                ]
-            , button [ class "btn one-half", type_ "button", onClick <| AlterFraction OneHalf ]
-                [ text "½"
-                ]
-            , button [ class "btn two-thirds", type_ "button", onClick <| AlterFraction TwoThirds ]
-                [ text "⅔"
-                ]
-            , button [ class "btn three-fourths", type_ "button", onClick <| AlterFraction ThreeFourths ]
-                [ text "¾"
-                ]
-            , button [ class "btn clear", type_ "button", onClick Clear ] [ text "⌫" ]
             ]
         , table
             [ class "grams-output" ]
@@ -216,7 +220,7 @@ bakingIngredientToString ingredient =
 modelToHtml : Model -> Html msg
 modelToHtml model =
     p [ class "mixed-number" ]
-        [ text <| String.fromInt model.cupsInputWhole ++ fractionToString model.cupsInputFraction ]
+        [ text <| String.fromInt model.cupsInputWhole ++ " " ++ fractionToString model.cupsInputFraction ]
 
 
 modelToValue : Model -> Float

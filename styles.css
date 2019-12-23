@@ -25,6 +25,7 @@ h1 {
   font-family: var(--font-header);
   font-size: 2.5rem;
   font-weight: 400;
+  margin: 0 auto;
 }
 @media (max-width: 350px) {
   h1 {
@@ -41,40 +42,20 @@ a:focus {
   color: var(--color-dark);
 }
 
-/* Reset input styles */
-input {
-  font-family: inherit;
-  font-size: inherit;
-  border: 0;
-  border-radius: 0;
-  padding: 0.25em;
-  background: none;
-  --input-border-size-style: 2px solid;
-}
-
-.input-custom {
+.user-input-display {
+  display: block;
   font-size: var(--font-size-controls);
-  text-align: center;
   width: 4em;
-  margin: 1em 0;
-  border-bottom: var(--input-border-size-style) var(--color-light);
+  margin: 0 auto 1em;
+  border-bottom: 2px solid var(--color-accent);
   transition: border var(--transition-duration);
-}
-
-.input-custom:hover {
-  border-bottom: var(--input-border-size-style) var(--color-accent);
-}
-
-.input-custom:focus {
-  outline: 0;
-  border-bottom: var(--input-border-size-style) var(--color-accent);
 }
 
 .btn {
   font-size: var(--font-size-controls);
   background: none;
   border-radius: 100px;
-  border: 0;
+  border: 2px solid var(--color-accent);
   color: var(--color-primary);
   background: var(--color-accent);
   transition: border var(--transition-duration),
@@ -145,6 +126,23 @@ body {
   min-height: 100vh;
   margin: 0 auto;
   min-width: 275px;
+}
+
+.form-row {
+  display: flex;
+  /* flex-wrap: wrap; */
+  margin: 0.1em 0;
+}
+.fraction-row {
+  justify-content: space-between;
+}
+
+.unit-row {
+  justify-content: flex-end;
+}
+
+.btn {
+  margin: 0 0.1em;
 }
 
 .grams-output {
