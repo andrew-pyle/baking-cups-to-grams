@@ -3,7 +3,7 @@ module Main exposing (..)
 import Browser
 import Html exposing (..)
 import Html.Attributes exposing (..)
-import Html.Events exposing (onInput)
+import Html.Events exposing (onClick)
 import Round
 
 
@@ -21,19 +21,29 @@ main =
 
 type alias Model =
     { cupsInputWhole : Int
-    , cupsInputFraction : Fraction
+    , cupsInputFraction : Frac
     }
 
 
-type alias Fraction =
-    { numerator : Int
-    , denominator : Int
-    }
+
+-- type alias Fraction =
+--     { numerator : Int
+--     , denominator : Int
+--     }
+
+
+type Frac
+    = OneFourth
+    | OneThird
+    | OneHalf
+    | TwoThirds
+    | ThreeFourths
+    | Nothing
 
 
 init : Model
 init =
-    Model 1 { numerator = 1, denominator = 4 }
+    Model 1 Nothing
 
 
 type BakingIngredient
@@ -65,7 +75,7 @@ bakingIngredients =
 type Msg
     = Increment Int
     | Decrement Int
-    | AlterFraction Fraction
+    | AlterFraction Frac
     | Clear
 
 
@@ -86,7 +96,7 @@ update msg model =
             { model | cupsInputFraction = fraction }
 
         Clear ->
-            { model | cupsInputWhole = 0, cupsInputFraction = Fraction 0 1 }
+            { model | cupsInputWhole = 0, cupsInputFraction = Nothing }
 
 
 
@@ -101,42 +111,31 @@ view model =
             , span [ class "unicode-arrow" ] [ text "→" ]
             , text " Grams of Ingredient"
             ]
-        , output [ class "input-display" ] [ modelToHtml model ]
         , Html.form []
-            [ button [ class "btn one", type_ "button", Html.Events.onClick <| Increment 1 ]
+            [ output [ class "input-display" ] [ text <| String.fromInt model.cupsInputWhole ++ fractionToString model.cupsInputFraction ]
+            , button [ class "btn one", type_ "button", onClick <| Increment 1 ]
                 [ text "+ 1"
                 ]
-            , button [ class "btn one", type_ "button", Html.Events.onClick <| Decrement 1 ]
+            , button [ class "btn one", type_ "button", onClick <| Decrement 1 ]
                 [ text "- 1"
                 ]
-            , button [ class "btn one-quarter", type_ "button", Html.Events.onClick <| AlterFraction <| Fraction 1 4 ]
+            , button [ class "btn one-quarter", type_ "button", onClick <| AlterFraction OneFourth ]
                 [ text "¼"
                 ]
-            , button [ class "btn one-third", type_ "button", Html.Events.onClick <| AlterFraction <| Fraction 1 3 ]
+            , button [ class "btn one-third", type_ "button", onClick <| AlterFraction OneThird ]
                 [ text "⅓"
                 ]
-            , button [ class "btn one-half", type_ "button", Html.Events.onClick <| AlterFraction <| Fraction 1 2 ]
+            , button [ class "btn one-half", type_ "button", onClick <| AlterFraction OneHalf ]
                 [ text "½"
                 ]
-            , button [ class "btn two-thirds", type_ "button", Html.Events.onClick <| AlterFraction <| Fraction 2 3 ]
+            , button [ class "btn two-thirds", type_ "button", onClick <| AlterFraction TwoThirds ]
                 [ text "⅔"
                 ]
-            , button [ class "btn three-fourths", type_ "button", Html.Events.onClick <| AlterFraction <| Fraction 3 4 ]
+            , button [ class "btn three-fourths", type_ "button", onClick <| AlterFraction ThreeFourths ]
                 [ text "¾"
                 ]
-            , button [ class "btn clear", type_ "button", Html.Events.onClick Clear ] [ text "⌫" ]
+            , button [ class "btn clear", type_ "button", onClick Clear ] [ text "⌫" ]
             ]
-
-        --     [ input
-        --         [ id "input-cups"
-        --         , class "input-custom"
-        --         , type_ "number"
-        --         , pattern "[0-9.]*"
-        --         , value model.cupsInputWhole
-        --         , onInput CupsInput
-        --         ]
-        --         []
-        --     , label [ for "input-cups" ] [ text "Cups" ]
         , table
             [ class "grams-output" ]
             [ thead []
@@ -148,7 +147,7 @@ view model =
                         tr []
                             [ td [ class "td-ingredient" ] [ text <| bakingIngredientToString ingredient ]
                             , td [ class "td-gram-value" ]
-                                [ text <| Round.round 7 <| modelToValue model ]
+                                [ text <| Round.round 0 <| cupsToGrams (modelToValue model) ingredient ]
 
                             -- [ text <| Round.round 0 <| modelToValue model ]
                             , td [ class "td-unit" ] [ text "g" ]
@@ -162,16 +161,6 @@ view model =
 
 
 -- HELPERS
-
-
-maybeCalculateGrams : String -> BakingIngredient -> String
-maybeCalculateGrams numberOfCups ingredient =
-    case String.toFloat numberOfCups of
-        Just value ->
-            Round.round 0 <| cupsToGrams value ingredient
-
-        Nothing ->
-            ""
 
 
 cupsToGrams : Float -> BakingIngredient -> Float
@@ -226,28 +215,54 @@ bakingIngredientToString ingredient =
 
 modelToHtml : Model -> Html msg
 modelToHtml model =
-    div []
-        [ div [ class "whole-number" ] [ text <| String.fromInt <| model.cupsInputWhole ]
-        , div [ class "fraction" ]
-            [ div [ class "fraction-part numerator" ] [ text <| String.fromInt <| model.cupsInputFraction.numerator ]
-            , div [ class "fraction-divider" ] []
-            , div [ class "fraction-part denomerator" ]
-                [ text <|
-                    String.fromInt <|
-                        if model.cupsInputFraction.denominator == 1 then
-                            (Debug.log <| Debug.toString model.cupsInputFraction.denominator)
-                                0
-
-                        else
-                            (Debug.log <| Debug.toString model.cupsInputFraction.denominator)
-                                model.cupsInputFraction.denominator
-                ]
-            ]
-        ]
+    p [ class "mixed-number" ]
+        [ text <| String.fromInt model.cupsInputWhole ++ fractionToString model.cupsInputFraction ]
 
 
 modelToValue : Model -> Float
 modelToValue model =
-    toFloat model.cupsInputWhole
-        + toFloat model.cupsInputFraction.numerator
-        / toFloat model.cupsInputFraction.denominator
+    toFloat model.cupsInputWhole + fractionToFloat model.cupsInputFraction
+
+
+fractionToString : Frac -> String
+fractionToString fraction =
+    case fraction of
+        OneFourth ->
+            "¼"
+
+        OneThird ->
+            "⅓"
+
+        OneHalf ->
+            "½"
+
+        TwoThirds ->
+            "⅔"
+
+        ThreeFourths ->
+            "¾"
+
+        Nothing ->
+            ""
+
+
+fractionToFloat : Frac -> Float
+fractionToFloat fraction =
+    case fraction of
+        OneFourth ->
+            1 / 4
+
+        OneThird ->
+            1 / 3
+
+        OneHalf ->
+            1 / 2
+
+        TwoThirds ->
+            2 / 3
+
+        ThreeFourths ->
+            3 / 4
+
+        Nothing ->
+            0
