@@ -20,12 +20,20 @@ main =
 
 
 type alias Model =
-    { numberOfCups : String }
+    { cupsInputWhole : String
+    , cupsInputFraction : Fraction
+    }
+
+
+type alias Fraction =
+    { numerator : Int
+    , denominator : Int
+    }
 
 
 init : Model
 init =
-    Model ""
+    Model "" { numerator = 0, denominator = 0 }
 
 
 type BakingIngredient
@@ -48,31 +56,6 @@ bakingIngredients =
     , PowderedSugar
     , PeanutButter
     ]
-
-
-bakingIngredientToString : BakingIngredient -> String
-bakingIngredientToString ingredient =
-    case ingredient of
-        Flour ->
-            "Flour"
-
-        GranulatedSugar ->
-            "Granulated Sugar"
-
-        BrownSugar ->
-            "Brown Sugar"
-
-        Butter ->
-            "Butter"
-
-        Shortening ->
-            "Shortening"
-
-        PowderedSugar ->
-            "Powdered Sugar"
-
-        PeanutButter ->
-            "Peanut Butter"
 
 
 
@@ -99,7 +82,7 @@ update msg model =
         --     else
         --         model
         CupsInput input ->
-            { model | numberOfCups = input }
+            { model | cupsInputWhole = input }
 
 
 
@@ -114,18 +97,26 @@ view model =
             , span [ class "unicode-arrow" ] [ text "→" ]
             , text " Grams of Ingredient"
             ]
-        , Html.form []
-            [ input
-                [ id "input-cups"
-                , class "input-custom"
-                , type_ "number"
-                , pattern "[0-9.]*"
-                , value model.numberOfCups
-                , onInput CupsInput
+        , output [ class "input-display" ]
+            [ div [ class "whole-number" ] [ text <| model.cupsInputWhole ]
+            , div [ class "fraction" ]
+                [ div [ class "fraction-part numerator" ] [ text <| String.fromInt <| model.cupsInputFraction.numerator ]
+                , div [ class "fraction-divider" ] []
+                , div [ class "fraction-part denomerator" ] [ text <| String.fromInt <| model.cupsInputFraction.denominator ]
                 ]
-                []
-            , label [ for "input-cups" ] [ text "Cups" ]
             ]
+        , Html.form []
+            --     [ input
+            --         [ id "input-cups"
+            --         , class "input-custom"
+            --         , type_ "number"
+            --         , pattern "[0-9.]*"
+            --         , value model.cupsInputWhole
+            --         , onInput CupsInput
+            --         ]
+            --         []
+            --     , label [ for "input-cups" ] [ text "Cups" ]
+            []
         , table
             [ class "grams-output" ]
             [ thead []
@@ -137,7 +128,7 @@ view model =
                         tr []
                             [ td [ class "td-ingredient" ] [ text <| bakingIngredientToString ingredient ]
                             , td [ class "td-gram-value" ]
-                                [ text <| maybeCalculateGrams model.numberOfCups ingredient ]
+                                [ text <| maybeCalculateGrams model.cupsInputWhole ingredient ]
                             , td [ class "td-unit" ] [ text "g" ]
                             ]
                     )
@@ -184,3 +175,40 @@ cupsToGrams cups unit =
 
         PowderedSugar ->
             cups * 125.0
+
+
+bakingIngredientToString : BakingIngredient -> String
+bakingIngredientToString ingredient =
+    case ingredient of
+        Flour ->
+            "Flour"
+
+        GranulatedSugar ->
+            "Granulated Sugar"
+
+        BrownSugar ->
+            "Brown Sugar"
+
+        Butter ->
+            "Butter"
+
+        Shortening ->
+            "Shortening"
+
+        PowderedSugar ->
+            "Powdered Sugar"
+
+        PeanutButter ->
+            "Peanut Butter"
+
+
+modelToHtml : Model -> Html msg
+modelToHtml model =
+    div [ class "model-display" ]
+        [ div [ class "whole-number" ] [ text <| model.cupsInputWhole ]
+        , div [ class "fraction" ]
+            [ div [ class "fraction-part numerator" ] [ text <| String.fromInt <| model.cupsInputFraction.numerator ]
+            , div [ class "fraction-divider" ] []
+            , div [ class "fraction-part denomerator" ] [ text <| String.fromInt <| model.cupsInputFraction.denominator ]
+            ]
+        ]
