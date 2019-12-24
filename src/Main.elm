@@ -111,9 +111,9 @@ view model =
             , span [ class "unicode-arrow" ] [ text "→" ]
             , text " Grams of Ingredient"
             ]
-        , output [ class "user-input-display", for "user-input" ] [ text <| String.fromInt model.cupsInputWhole ++ fractionToString model.cupsInputFraction ]
-        , Html.form [ id "user-input", class "form-controls" ]
-            [ div [ class "form-row unit-row" ]
+        , output [ class "user-input-display", for "user-input-form" ] [ modelToHtml model ]
+        , Html.form [ class "user-input-form", id "user-input-form" ]
+            [ div [ class "user-input-form-row" ]
                 [ button [ class "btn one", type_ "button", onClick <| Increment 1 ]
                     [ text "+ 1"
                     ]
@@ -122,7 +122,7 @@ view model =
                     ]
                 , button [ class "btn clear", type_ "button", onClick Clear ] [ text "⌫" ]
                 ]
-            , div [ class "form-row fraction-row" ]
+            , div [ class "user-input-form-row" ]
                 [ button [ class "btn one-quarter", type_ "button", onClick <| AlterFraction OneFourth ]
                     [ text "¼"
                     ]
@@ -219,7 +219,7 @@ bakingIngredientToString ingredient =
 
 modelToHtml : Model -> Html msg
 modelToHtml model =
-    p [ class "mixed-number" ]
+    div [ class "mixed-number" ]
         [ text <| String.fromInt model.cupsInputWhole ++ " " ++ fractionToString model.cupsInputFraction ]
 
 

@@ -1,7 +1,7 @@
 :root {
   --font-header: "Alata", sans-serif;
   --font-body: "Alata", sans-serif;
-  --font-monospace: "Alata", sans-serif;
+  --font-fractions: "Fira Mono", "Alata", sans-serif;
   --color-primary: rgba(219, 218, 210);
   --color-accent: rgba(183, 29, 96, 0.85);
   --color-dark: rgba(43, 39, 40);
@@ -43,16 +43,22 @@ a:focus {
 }
 
 .user-input-display {
-  display: block;
+  font-family: var(--font-fractions);
+  font-weight: 500;
   font-size: var(--font-size-controls);
-  width: 4em;
-  margin: 0 auto 1em;
   border-bottom: 2px solid var(--color-accent);
   transition: border var(--transition-duration);
 }
 
+.user-input-form {
+  font-family: var(--font-fractions);
+  /* font-weight: 500; */
+}
+
 .btn {
   font-size: var(--font-size-controls);
+  font-family: inherit;
+  font-weight: inherit;
   background: none;
   border-radius: 100px;
   border: 2px solid var(--color-accent);
@@ -95,7 +101,7 @@ a:focus {
 }
 
 .td-gram-value {
-  font-family: var(--font-monospace);
+  font-family: var(--font-body);
   font-weight: 400;
 }
 
@@ -110,13 +116,6 @@ a:focus {
 
 /* ====== Layout ====== */
 
-.container {
-  flex-grow: 1; /* Expand to push footer to bottom */
-  margin: 0 auto;
-  text-align: center;
-  max-width: 80%;
-}
-
 body {
   display: flex;
   flex-direction: column;
@@ -128,17 +127,33 @@ body {
   min-width: 275px;
 }
 
-.form-row {
-  display: flex;
-  /* flex-wrap: wrap; */
-  margin: 0.1em 0;
+.container {
+  flex-grow: 1; /* Expand to push footer to bottom */
+  margin: 0 auto;
+  text-align: center;
+  max-width: 80%;
 }
-.fraction-row {
+
+.user-input-display {
+  display: block;
+  width: 4em;
+  margin: 0 auto 0.75em;
+}
+
+.user-input-form {
+  max-width: 310px;
+  margin: 0 auto;
+}
+
+.user-input-form-row {
+  display: flex;
+  margin: 0.1em 0;
   justify-content: space-between;
 }
 
-.unit-row {
-  justify-content: flex-end;
+.user-input-form-row > .btn {
+  flex: 1 0;
+  /* margin: 0.5em; */
 }
 
 .btn {
