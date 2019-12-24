@@ -111,7 +111,8 @@ view model =
             , span [ class "unicode-arrow" ] [ text "→" ]
             , text " Grams of Ingredient"
             ]
-        , output [ class "user-input-display", for "user-input-form" ] [ modelToHtml model ]
+        , output [ class "user-input-display", id "user-input-display", for "user-input-form" ] [ modelToHtml model ]
+        , label [ for "user-input-display" ] [ text <| "Cups" ]
         , Html.form [ class "user-input-form", id "user-input-form" ]
             [ div [ class "user-input-form-row" ]
                 [ button [ class "btn one", type_ "button", onClick <| Increment 1 ]
