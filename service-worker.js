@@ -1,5 +1,5 @@
 // See https://developers.google.com/web/fundamentals/primers/service-workers/
-const APP_VERSION = "0.3.1";
+const APP_VERSION = "0.3.2";
 const CACHE_NAME = `baking-tools-v${APP_VERSION}`;
 const GOOGLE_FONTS_DOMAINS_REGEX = /fonts.(googleapis|gstatic).com/;
 
